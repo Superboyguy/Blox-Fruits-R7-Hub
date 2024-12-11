@@ -1,0 +1,95 @@
+-- GUI Initialization
+local guiColor = Color3.fromRGB(100, 100, 100)
+local screenGui = Instance.new("ScreenGui", game.CoreGui)
+local mainFrame = Instance.new("Frame", screenGui)
+mainFrame.Size = UDim2.new(0, 400, 0, 300)
+mainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+mainFrame.BackgroundColor3 = guiColor
+mainFrame.BackgroundTransparency = 0.3
+mainFrame.Draggable = true
+mainFrame.Active = true
+
+local minimizeButton = Instance.new("TextButton", mainFrame)
+minimizeButton.Size = UDim2.new(0, 40, 0, 40)
+minimizeButton.Position = UDim2.new(1, -50, 0, 10)
+minimizeButton.Text = "-"
+minimizeButton.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+
+local closeButton = Instance.new("TextButton", mainFrame)
+closeButton.Size = UDim2.new(0, 40, 0, 40)
+closeButton.Position = UDim2.new(1, -50, 0, 60)
+closeButton.Text = "X"
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+
+local function createConfirmationDialog(msg, callback)
+    local dialog = Instance.new("ScreenGui", game.CoreGui)
+    local frame = Instance.new("Frame", dialog)
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    frame.BackgroundColor3 = guiColor
+
+    local label = Instance.new("TextLabel", frame)
+    label.Size = UDim2.new(1, 0, 0.5, 0)
+    label.Text = msg
+    label.TextColor3 = Color3.new(1, 1, 1)
+    label.BackgroundTransparency = 1
+
+    local yesButton = Instance.new("TextButton", frame)
+    yesButton.Size = UDim2.new(0.4, 0, 0.3, 0)
+    yesButton.Position = UDim2.new(0.1, 0, 0.6, 0)
+    yesButton.Text = "Yes"
+    yesButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+
+    local noButton = Instance.new("TextButton", frame)
+    noButton.Size = UDim2.new(0.4, 0, 0.3, 0)
+    noButton.Position = UDim2.new(0.5, 0, 0.6, 0)
+    noButton.Text = "No"
+    noButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+
+    yesButton.MouseButton1Click:Connect(function()
+        dialog:Destroy()
+        callback(true)
+    end)
+
+    noButton.MouseButton1Click:Connect(function()
+        dialog:Destroy()
+        callback(false)
+    end)
+end
+
+minimizeButton.MouseButton1Click:Connect(function()
+    if mainFrame.Size == UDim2.new(0, 400, 0, 300) then
+        mainFrame.Size = UDim2.new(0, 50, 0, 50)
+    else
+        mainFrame.Size = UDim2.new(0, 400, 0, 300)
+    end
+end)
+
+closeButton.MouseButton1Click:Connect(function()
+    createConfirmationDialog("Are you sure you want to close?", function(result)
+        if result then
+            screenGui:Destroy()
+        end
+    end)
+end)
+
+-- Auto Farming Logic
+local farmingEnabled = false
+local function autoFarmLevels()
+    while farmingEnabled do
+        pcall(function()
+            -- Add Auto Farming Logic Here
+        end)
+        wait()
+    end
+end
+
+local farmButton = Instance.new("TextButton", mainFrame)
+farmButton.Size = UDim2.new(0, 200, 0, 50)
+farmButton.Position = UDim2.new(0.5, -100, 0.5, -100)
+farmButton.Text = "Toggle Auto Farm"
+farmButton.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+farmButton.MouseButton1Click:Connect(function()
+    farmingEnabled = not farmingEnabled
+    autoFarmLevels()
+end)
